@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Jakub Sokolowski <jakub@status.im>
+  description: Deploy Gitea instance
+  company: Status.im
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+    - focal
+  dependencies:
+    - name: consul-service
+      src: git+git@github.com:status-im/infra-role-consul-service.git
+      scm: git
+    - name: systemd-timer
+      src: git+git@github.com:status-im/infra-role-systemd-timer.git
+      scm: git
