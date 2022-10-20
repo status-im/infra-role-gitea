@@ -1,0 +1,56 @@
+---
+gitea_service_name: 'gitea'
+gitea_service_path: '/docker/{{ gitea_service_name }}'
+gitea_compose_file: '{{ gitea_service_path }}/docker-compose.yml'
+
+# General
+gitea_app_name:
+gitea_app_web_domain:
+gitea_app_ssh_domain: '{{ gitea_app_web_domain | mandatory }}'
+gitea_app_ssh_port: 22
+gitea_app_disable_registration: true
+gitea_app_install_lock: true
+gitea_app_log_level: 'info'
+
+# Secrets
+#gitea_app_secret_key:
+#gitea_app_security_token:
+#gitea_app_jwt_secret:
+
+# Admin user
+#gitea_app_admin_user: ~
+#gitea_app_admin_pass: ~
+#gitea_app_admin_email: ~
+
+# App
+gitea_app_cont_name: '{{ gitea_service_name }}-app'
+gitea_app_cont_vol: '{{ gitea_service_path }}/app'
+gitea_app_cont_digest: 'sha256:24fed63774f280f7fa4294b17a90fb80d75e3bbb658277967dce6050a998843a' # 1.17.0
+gitea_app_cont_image: 'gitea/gitea@{{ gitea_app_cont_digest }}'
+gitea_app_cont_ssh_port: 2222
+gitea_app_cont_web_port: 3000
+gitea_app_cont_web_url: 'http://localhost:{{ gitea_app_cont_web_port }}'
+gitea_app_cont_uid: 1000
+gitea_app_host_uid: '{{ 100000 + gitea_app_cont_uid | int }}'
+# DB
+gitea_db_cont_name: '{{ gitea_service_name }}-db'
+gitea_db_cont_vol: '{{ gitea_service_path }}/db'
+gitea_db_cont_tag: '9.6'
+gitea_db_cont_image: 'postgres:{{ gitea_db_cont_tag }}'
+gitea_db_cont_port: 5432
+gitea_db_cont_uid: 70
+gitea_db_host_uid: '{{ 100000 + gitea_db_cont_uid | int }}'
+gitea_db_name: 'gitea'
+gitea_db_user: 'gitea'
+gitea_db_pass: 'changeMeIfYouCare'
+
+# Backups
+gitea_db_backup_service_name: 'dump-{{ gitea_service_name }}-db'
+gitea_db_backup_frequency: 'daily'
+gitea_db_backup_timeout: 300
+gitea_db_backup_user: 'root'
+
+# General container management
+compose_recreate: 'smart'
+compose_state: 'present'
+compose_restart: false

@@ -1,0 +1,17 @@
+---
+- name: Create compose file
+  template:
+    src: 'docker-compose.yml.j2'
+    dest: '{{ gitea_compose_file }}'
+    owner: 'dockremap'
+    group: 'docker'
+    mode: 0640
+
+- name: Create containers
+  docker_compose:
+    project_src: '{{ gitea_service_path }}'
+    pull: true
+    state: '{{ compose_state }}'
+    restarted: '{{ compose_restart }}'
+    recreate: '{{ gitea_config.changed | ternary("always", compose_recreate) }}'
+  register: gitea_container

@@ -1,0 +1,35 @@
+---
+version: '3.7'
+services:
+  app:
+    container_name: '{{ gitea_app_cont_name }}'
+    image: '{{ gitea_app_cont_image }}'
+    restart: 'always'
+    volumes:
+      - '{{ gitea_app_cont_vol }}/data:/data'
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+    ports:
+      - '{{ gitea_app_cont_web_port }}:{{ gitea_app_cont_web_port }}/tcp'
+      - '{{ gitea_app_cont_ssh_port }}:22/tcp'
+    depends_on:
+      - db
+ 
+  db:
+    container_name: '{{ gitea_db_cont_name }}'
+    image: '{{ gitea_db_cont_image }}'
+    restart: always
+    ports:
+      - '{{ gitea_db_cont_port }}:{{ gitea_db_cont_port }}'
+    environment:
+      POSTGRES_DB:       '{{ gitea_db_name }}'
+      POSTGRES_USER:     '{{ gitea_db_user }}'
+      POSTGRES_PASSWORD: '{{ gitea_db_pass }}'
+      # This fixes chmod errors on DB startup due to volume + userns-remap
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    tmpfs:
+      - '/run/postgresql:size=512K'
+      - '/tmp:size=256K'
+    volumes:
+      - '{{ gitea_db_cont_vol }}/data:/var/lib/postgresql/data'
+      - '{{ gitea_db_cont_vol }}/backup:/backup'

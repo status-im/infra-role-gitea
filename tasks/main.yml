@@ -1,0 +1,7 @@
+---
+- import_tasks: config.yml
+- import_tasks: container.yml
+- import_tasks: admin.yml
+- import_tasks: token.yml
+- import_tasks: backup.yml
+- import_tasks: consul.yml

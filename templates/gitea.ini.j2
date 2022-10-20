@@ -1,0 +1,75 @@
+APP_NAME = {{ gitea_app_name | mandatory }}
+RUN_MODE = prod
+
+[repository]
+ROOT = /data/git/repositories
+DEFAULT_BRANCH = master
+
+[repository.local]
+LOCAL_COPY_PATH = /data/gitea/tmp/local-repo
+
+[repository.upload]
+TEMP_PATH = /data/gitea/uploads
+
+[server]
+APP_DATA_PATH    = /data/gitea
+DOMAIN           = {{ gitea_app_web_domain | mandatory }}
+SSH_DOMAIN       = {{ gitea_app_ssh_domain | mandatory }}
+HTTP_PORT        = {{ gitea_app_cont_web_port }}
+ROOT_URL         = https://{{ gitea_app_web_domain | mandatory }}
+DISABLE_SSH      = false
+SSH_PORT         = {{ gitea_app_ssh_port }}
+LFS_START_SERVER = false
+LFS_CONTENT_PATH = /data/git/lfs
+LANDING_PAGE     = explore
+
+[database]
+DB_TYPE = postgres
+HOST    = db:{{ gitea_db_cont_port }}
+NAME    = {{ gitea_db_name }}
+USER    = {{ gitea_db_user }}
+PASSWD  = {{ gitea_db_pass }}
+LOG_SQL = false
+
+[indexer]
+ISSUE_INDEXER_PATH = /data/gitea/indexers/issues.bleve
+
+[session]
+PROVIDER = db
+COOKIE_SECURE = true
+SAME_SITE = strict
+
+[ui]
+DEFAULT_THEME = arc-green
+
+[api]
+ENABLE_SWAGGER = true
+
+[picture]
+AVATAR_UPLOAD_PATH            = /data/gitea/avatars
+REPOSITORY_AVATAR_UPLOAD_PATH = /data/gitea/repo-avatars
+
+[attachment]
+PATH = /data/gitea/attachments
+
+[log]
+MODE   = console
+ROUTER = console
+LEVEL  = {{ gitea_app_log_level }}
+
+[log.console]
+COLORIZE = false
+
+[security]
+INSTALL_LOCK   = {{ gitea_app_install_lock }}
+SECRET_KEY     = {{ gitea_app_secret_key | mandatory }}
+INTERNAL_TOKEN = {{ gitea_app_security_token | mandatory }}
+# Accept X-Forwarded-For headers
+REVERSE_PROXY_TRUSTED_PROXIES = *
+
+[service]
+DISABLE_REGISTRATION = {{ gitea_app_disable_registration }}
+REQUIRE_SIGNIN_VIEW  = false
+
+[oauth2]
+JWT_SECRET = {{ gitea_app_jwt_secret | mandatory }}

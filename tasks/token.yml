@@ -1,0 +1,39 @@
+---
+- name: Check if API token file exists
+  stat:
+    path: '{{ gitea_service_path }}/api-token'
+  register: gitea_token_file
+
+- name: Create API token
+  when: not gitea_token_file.stat.exists
+  block:
+    - name: Generate API token for admin
+      uri:
+        url: '{{ gitea_app_cont_web_url }}/api/v1/users/{{ gitea_app_admin_user }}/tokens'
+        method: 'POST'
+        status_code: 201
+        body_format: 'json'
+        body: { name: 'ansible' }
+        return_content: true
+        user: '{{ gitea_app_admin_user | mandatory }}'
+        password: '{{ gitea_app_admin_pass | mandatory }}'
+        force_basic_auth: true
+      register: gitea_app_admin_token_raw
+
+    - name: Create an API token file
+      copy:
+        dest: '{{ gitea_service_path }}/api-token'
+        content: '{{ gitea_app_admin_token_raw.json.sha1 }}'
+        mode: 0400
+      when: not gitea_app_admin_token_raw.skipped
+
+- name: Read API token from file
+  slurp:
+    path: '{{ gitea_service_path }}/api-token'
+  register: gitea_app_admin_token_raw
+  when: gitea_token_file.stat.exists
+
+- name: Decode token from file cointents
+  set_fact:
+    gitea_app_admin_token: '{{ gitea_app_admin_token_raw.content | b64decode | trim }}'
+  when: gitea_token_file.stat.exists

@@ -1,0 +1,14 @@
+---
+- name: Create Consul service definition
+  include_role: name=consul-service
+  vars:
+    consul_config_name: '{{ gitea_service_name }}'
+    consul_services:
+      - name: '{{ gitea_service_name }}'
+        tags: ['gitea', 'git', 'repos']
+        port: '{{ gitea_app_cont_web_port }}'
+        checks:
+          - id: '{{ gitea_service_name }}-status'
+            name: Gitea Healthcheck
+            type: http
+            http: 'http://localhost:{{ gitea_app_cont_web_port }}/api/v1/version'

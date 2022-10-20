@@ -1,0 +1,39 @@
+---
+- name: Create directories for app data
+  file:
+    path: '{{ gitea_app_cont_vol }}/{{ item }}'
+    state: directory
+    owner: '{{ gitea_app_host_uid }}'
+    group: dockremap
+    mode: 0755
+  with_items:
+    - 'data/gitea/conf'
+    - 'data/gitea/log'
+    - 'data/git'
+    - 'data/git/.ssh'
+
+- name: Create SSH directory
+  file:
+    path: '{{ gitea_app_cont_vol }}/data/ssh'
+    state: directory
+    owner: '{{ gitea_app_host_uid }}'
+    group: dockremap
+    mode: 0700
+
+- name: Create directory for DB data
+  file:
+    path: '{{ gitea_db_cont_vol }}/data'
+    state: directory
+    owner: '{{ gitea_db_host_uid }}'
+    group: dockremap
+    mode: 0777
+    recurse: true
+
+- name: Create Gitea configuration
+  template:
+    src: 'gitea.ini.j2'
+    dest: '{{ gitea_app_cont_vol }}/data/gitea/conf/app.ini'
+    owner: '{{ gitea_app_host_uid }}'
+    group: dockremap
+    mode: 0640
+  register: gitea_config

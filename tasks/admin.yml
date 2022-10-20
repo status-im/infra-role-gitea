@@ -1,0 +1,26 @@
+---
+- name: Wait for Web port to be available
+  wait_for:
+    port: '{{ gitea_app_cont_web_port }}'
+    delay: 15
+  when: gitea_container.changed
+
+- name: Check if admin user already exists
+  uri:
+    url: '{{ gitea_app_cont_web_url }}/api/v1/users/{{ gitea_app_admin_user }}'
+    status_code: [200, 404]
+    return_content: true
+    user: '{{ gitea_app_admin_user | mandatory }}'
+    password: '{{ gitea_app_admin_pass | mandatory }}'
+    force_basic_auth: true
+  register: gitea_admin_user_raw
+
+- name: Create main Gitea admin user
+  command: |
+    docker exec -i {{ gitea_app_cont_name }} \
+      gitea admin create-user --admin \
+        --username '{{ gitea_app_admin_user | mandatory }}' \
+        --password '{{ gitea_app_admin_pass | mandatory }}' \
+        --email '{{ gitea_app_admin_email | mandatory }}' \
+        --must-change-password=false
+  when: gitea_admin_user_raw.status == 404
