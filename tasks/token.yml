@@ -18,14 +18,12 @@
         user: '{{ gitea_app_admin_user | mandatory }}'
         password: '{{ gitea_app_admin_pass | mandatory }}'
         force_basic_auth: true
-      register: gitea_app_admin_token_raw
 
     - name: Create an API token file
       copy:
         dest: '{{ gitea_service_path }}/api-token'
         content: '{{ gitea_app_admin_token_raw.json.sha1 }}'
         mode: 0400
-      when: not gitea_app_admin_token_raw.skipped
 
 - name: Read API token from file
   slurp:
