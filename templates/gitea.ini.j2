@@ -20,8 +20,10 @@ ROOT_URL         = https://{{ gitea_app_web_domain | mandatory }}
 DISABLE_SSH      = false
 SSH_PORT         = {{ gitea_app_ssh_port }}
 LFS_START_SERVER = false
-LFS_CONTENT_PATH = /data/git/lfs
 LANDING_PAGE     = explore
+
+[lfs]
+PATH = /data/git/lfs
 
 [database]
 DB_TYPE = postgres
