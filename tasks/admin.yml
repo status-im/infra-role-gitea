@@ -10,9 +10,6 @@
     url: '{{ gitea_app_cont_web_url }}/api/v1/users/{{ gitea_app_admin_user }}'
     status_code: [200, 404]
     return_content: true
-    user: '{{ gitea_app_admin_user | mandatory }}'
-    password: '{{ gitea_app_admin_pass | mandatory }}'
-    force_basic_auth: true
   register: gitea_admin_user_raw
 
 - name: Create main Gitea admin user
