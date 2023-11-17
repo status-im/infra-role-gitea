@@ -14,8 +14,8 @@
 
 - name: Create main Gitea admin user
   command: |
-    docker exec -i {{ gitea_app_cont_name }} \
-      gitea admin create-user --admin \
+    docker exec --user {{ gitea_app_cont_uid }} -i {{ gitea_app_cont_name }} \
+      gitea admin user create --admin \
         --username '{{ gitea_app_admin_user | mandatory }}' \
         --password '{{ gitea_app_admin_pass | mandatory }}' \
         --email '{{ gitea_app_admin_email | mandatory }}' \
