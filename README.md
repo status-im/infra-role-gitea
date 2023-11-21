@@ -21,6 +21,15 @@ gitea_app_admin_pass: 'secret-root-pass'
 gitea_app_admin_email: 'root@example.org'
 ```
 
+## Initialisation
+
+Organization can be initialised  with:
+```yaml
+gitea_organizations:
+  - org1
+  - org2
+```
+
 # Administration
 
 You can manage the services using Docker Compose:
