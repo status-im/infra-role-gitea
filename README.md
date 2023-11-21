@@ -29,6 +29,18 @@ gitea_organizations:
   - org1
   - org2
 ```
+
+## Purge
+
+A purge is run daily and remove all containers older than `gitea_purge_max_retention` days.
+
+It can be configure with:
+
+```yaml
+gitea_container_purge_timer_frequency: 'daily'
+gitea_purge_max_retention:   15
+```
+
 # Administration
 
 You can manage the services using Docker Compose:

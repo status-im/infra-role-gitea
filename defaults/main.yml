@@ -56,6 +56,13 @@ gitea_organizations: []
 #  - org1 
 #  - org2
 
+# Purge
+gitea_container_purge_timer_name: 'gitea-purge-artifact'
+gitea_container_purge_timer_user: '{{ gitea_app_host_uid }}'
+gitea_container_purge_timer_frequency: 'daily'
+gitea_container_purge_timer_timeout: 120
+gitea_purge_max_retention: 15
+
 # General container management
 compose_recreate: 'smart'
 compose_state: 'present'
