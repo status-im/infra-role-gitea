@@ -29,7 +29,6 @@ gitea_organizations:
   - org1
   - org2
 ```
-
 # Administration
 
 You can manage the services using Docker Compose:
