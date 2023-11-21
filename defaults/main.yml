@@ -50,6 +50,12 @@ gitea_db_backup_frequency: 'daily'
 gitea_db_backup_timeout: 300
 gitea_db_backup_user: 'root'
 
+# Ini
+gitea_organizations: []
+#gitea_organizations:
+#  - org1 
+#  - org2
+
 # General container management
 compose_recreate: 'smart'
 compose_state: 'present'
