@@ -18,6 +18,7 @@
         user: '{{ gitea_app_admin_user | mandatory }}'
         password: '{{ gitea_app_admin_pass | mandatory }}'
         force_basic_auth: true
+      register: gitea_app_admin_token_raw
 
     - name: Create an API token file
       copy:
