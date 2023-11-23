@@ -1,9 +1,15 @@
 ---
 - import_tasks: config.yml
+  tags: ['role::gitea', 'role::gitea:config']
 - import_tasks: container.yml
+  tags: ['role::gitea', 'role::gitea:container']
 - import_tasks: admin.yml
+  tags: ['role::gitea', 'role::gitea:admin']
 - import_tasks: token.yml
+  tags: ['role::gitea', 'role::gitea:token']
 - import_tasks: backup.yml
+  tags: ['role::gitea', 'role::gitea:backup']
 - import_tasks: consul.yml
+  tags: ['role::gitea', 'role::gitea:consul']
 - import_tasks: init-registry.yml
   tags: ['role::gitea', 'role::gitea:init-registry']
