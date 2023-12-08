@@ -84,7 +84,7 @@ def delete_artifact(giteaApi, art):
     logging.info('Deleting artifact %s of %s' % (art.name, art.owner))
     try:
         res=giteaApi._del('packages/%s/container/%s/%s' % (art.owner, art.name, art.version))
-    except request.exceptions.HTTPError as err:
+    except requests.exceptions.HTTPError as err:
         logging.error('Error %s when trying to delete artifact %s:%s from %s: %s' % (err.response.status_code, art.name, art.version, art.owner, err.response.text))
         raise err
 
