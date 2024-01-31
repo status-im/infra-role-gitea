@@ -1,0 +1,16 @@
+---
+- name: Copy init script
+  copy:
+    src: 'init-orgs.py'
+    dest: '{{ gitea_service_path }}/init-orgs.py'
+    owner: '{{ gitea_app_host_uid }}'
+    group: docker
+    mode: 0770
+
+- name: Launch init script
+  command: |
+    {{ gitea_service_path }}/init-orgs.py --orgs='{{ gitea_organizations | join(',') }}'
+  environment:
+    GITEA_TOKEN: '{{ gitea_app_admin_token }}'
+    GITEA_URL:   'http://localhost:{{ gitea_app_cont_web_port }}'
+  when: gitea_organizations is defined and gitea_organizations|length > 0

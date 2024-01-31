@@ -11,7 +11,9 @@
   tags: ['role::gitea', 'role::gitea:backup']
 - import_tasks: consul.yml
   tags: ['role::gitea', 'role::gitea:consul']
-- import_tasks: init-registry.yml
-  tags: ['role::gitea', 'role::gitea:init-registry']
+- import_tasks: token.yml
+  tags: ['role::gitea', 'role::gitea:token']
+- import_tasks: init.yml
+  tags: ['role::gitea', 'role::gitea:init']
 - import_tasks: cleanup.yml
   tags: ['role::gitea', 'role::gitea:cleanup']
