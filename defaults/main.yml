@@ -25,7 +25,7 @@ gitea_app_log_level: 'info'
 # App
 gitea_app_cont_name: '{{ gitea_service_name }}-app'
 gitea_app_cont_vol: '{{ gitea_service_path }}/app'
-gitea_app_cont_digest: 'sha256:eda9ebe211772fd2a47c02a7f828eb5c957f5812043a7ff03e4e2780a850554b' # 1.20.3
+gitea_app_cont_digest: 'sha256:a31bc526427204ed4aa770c8c8499ac4e1b2041c8c20ceead64c0c869accd53b' # 1.21.4
 gitea_app_cont_image: 'gitea/gitea@{{ gitea_app_cont_digest }}'
 gitea_app_cont_ssh_port: 2222
 gitea_app_cont_web_port: 3000

@@ -55,9 +55,9 @@ REPOSITORY_AVATAR_UPLOAD_PATH = /data/gitea/repo-avatars
 PATH = /data/gitea/attachments
 
 [log]
-MODE   = console
-ROUTER = console
-LEVEL  = {{ gitea_app_log_level }}
+MODE  = console
+LEVEL = {{ gitea_app_log_level }}
+logger.router.MODE = console
 
 [log.console]
 COLORIZE = false
