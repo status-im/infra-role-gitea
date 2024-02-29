@@ -78,3 +78,8 @@ JWT_SECRET = {{ gitea_app_jwt_secret | mandatory }}
 
 [packages]
 ENABLED=true
+
+[cron.delete_repo_archives]
+ENABLED = true
+RUN_AT_START = true
+SCHEDULE = @midnight;
