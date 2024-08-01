@@ -1,5 +1,6 @@
 APP_NAME = {{ gitea_app_name | mandatory }}
 RUN_MODE = prod
+WORK_PATH = /data/gitea
 
 [repository]
 ROOT = /data/git/repositories
@@ -12,25 +13,25 @@ LOCAL_COPY_PATH = /data/gitea/tmp/local-repo
 TEMP_PATH = /data/gitea/uploads
 
 [server]
-APP_DATA_PATH    = /data/gitea
-DOMAIN           = {{ gitea_app_web_domain | mandatory }}
-SSH_DOMAIN       = {{ gitea_app_ssh_domain | mandatory }}
-HTTP_PORT        = {{ gitea_app_cont_web_port }}
-ROOT_URL         = https://{{ gitea_app_web_domain | mandatory }}
-DISABLE_SSH      = false
-SSH_PORT         = {{ gitea_app_ssh_port }}
+APP_DATA_PATH = /data/gitea
+DOMAIN = {{ gitea_app_web_domain | mandatory }}
+SSH_DOMAIN = {{ gitea_app_ssh_domain | mandatory }}
+HTTP_PORT = {{ gitea_app_cont_web_port }}
+ROOT_URL = https://{{ gitea_app_web_domain | mandatory }}
+DISABLE_SSH = false
+SSH_PORT = {{ gitea_app_ssh_port }}
 LFS_START_SERVER = false
-LANDING_PAGE     = explore
+LANDING_PAGE = explore
 
 [lfs]
 PATH = /data/git/lfs
 
 [database]
 DB_TYPE = postgres
-HOST    = db:{{ gitea_db_cont_port }}
-NAME    = {{ gitea_db_name }}
-USER    = {{ gitea_db_user }}
-PASSWD  = {{ gitea_db_pass }}
+HOST = db:{{ gitea_db_cont_port }}
+NAME = {{ gitea_db_name }}
+USER = {{ gitea_db_user }}
+PASSWD = {{ gitea_db_pass }}
 LOG_SQL = false
 
 [indexer]
@@ -48,14 +49,14 @@ DEFAULT_THEME = arc-green
 ENABLE_SWAGGER = true
 
 [picture]
-AVATAR_UPLOAD_PATH            = /data/gitea/avatars
+AVATAR_UPLOAD_PATH = /data/gitea/avatars
 REPOSITORY_AVATAR_UPLOAD_PATH = /data/gitea/repo-avatars
 
 [attachment]
 PATH = /data/gitea/attachments
 
 [log]
-MODE  = console
+MODE = console
 LEVEL = {{ gitea_app_log_level }}
 logger.router.MODE = console
 
@@ -63,21 +64,21 @@ logger.router.MODE = console
 COLORIZE = false
 
 [security]
-INSTALL_LOCK   = {{ gitea_app_install_lock }}
-SECRET_KEY     = {{ gitea_app_secret_key | mandatory }}
+INSTALL_LOCK = {{ gitea_app_install_lock }}
+SECRET_KEY = {{ gitea_app_secret_key | mandatory }}
 INTERNAL_TOKEN = {{ gitea_app_security_token | mandatory }}
 # Accept X-Forwarded-For headers
 REVERSE_PROXY_TRUSTED_PROXIES = *
 
 [service]
 DISABLE_REGISTRATION = {{ gitea_app_disable_registration }}
-REQUIRE_SIGNIN_VIEW  = false
+REQUIRE_SIGNIN_VIEW = false
 
 [oauth2]
 JWT_SECRET = {{ gitea_app_jwt_secret | mandatory }}
 
 [packages]
-ENABLED=true
+ENABLED = true
 
 [cron.delete_repo_archives]
 ENABLED = true
