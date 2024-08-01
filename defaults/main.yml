@@ -7,7 +7,7 @@ gitea_compose_file: '{{ gitea_service_path }}/docker-compose.yml'
 gitea_app_name:
 gitea_app_web_domain:
 gitea_app_ssh_domain: '{{ gitea_app_web_domain | mandatory }}'
-gitea_app_ssh_port: 2222
+gitea_app_ssh_port: 222
 gitea_app_disable_registration: true
 gitea_app_install_lock: true
 gitea_app_log_level: 'info'
