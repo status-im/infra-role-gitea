@@ -1,8 +1,8 @@
 ---
 - import_tasks: config.yml
   tags: ['role::gitea', 'role::gitea:config']
-- import_tasks: container.yml
-  tags: ['role::gitea', 'role::gitea:container']
+- import_tasks: compose.yml
+  tags: ['role::gitea', 'role::gitea:compose']
 - import_tasks: admin.yml
   tags: ['role::gitea', 'role::gitea:admin']
 - import_tasks: token.yml
