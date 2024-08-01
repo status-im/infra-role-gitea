@@ -1,5 +1,4 @@
 ---
-version: '3.7'
 services:
   app:
     container_name: '{{ gitea_app_cont_name }}'
@@ -14,7 +13,7 @@ services:
       - '{{ gitea_app_cont_ssh_port }}:22/tcp'
     depends_on:
       - db
- 
+
   db:
     container_name: '{{ gitea_db_cont_name }}'
     image: '{{ gitea_db_cont_image }}'

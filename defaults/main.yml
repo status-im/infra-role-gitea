@@ -63,7 +63,7 @@ gitea_container_cleanup_timer_frequency: 'daily'
 gitea_container_cleanup_timer_timeout: 120
 gitea_cleanup_max_retention: 15
 
-# General container management
-compose_recreate: 'smart'
+# general container management
+compose_recreate: 'auto'
 compose_state: 'present'
-compose_restart: false
+compose_pull: 'always'
