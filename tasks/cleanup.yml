@@ -8,7 +8,7 @@
     mode: 0755
 
 - name: 'Create timer for launch the clean up of workspace '
-  include_role: name=systemd-timer
+  include_role: name=infra-role-systemd-timer
   vars:
     systemd_timer_name: '{{ gitea_container_cleanup_timer_name }}'
     systemd_timer_description: 'Timer to perform clean '

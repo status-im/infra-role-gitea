@@ -1,6 +1,6 @@
 ---
 - name: 'Create timer for Gitea backup: {{ gitea_db_backup_service_name }}'
-  include_role: name=systemd-timer
+  include_role: name=infra-role-systemd-timer
   vars:
     systemd_timer_name: '{{ gitea_db_backup_service_name }}'
     systemd_timer_description: 'Dump Gitea PostgreSQL database.'
