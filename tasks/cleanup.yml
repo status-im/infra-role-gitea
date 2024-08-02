@@ -10,18 +10,19 @@
 - name: 'Create timer for launch the clean up of workspace '
   include_role: name=infra-role-systemd-timer
   vars:
-    systemd_timer_name: '{{ gitea_container_cleanup_timer_name }}'
-    systemd_timer_description: 'Timer to perform clean '
+    systemd_timer_description:  'Timer to perform clean '
+    systemd_timer_name:         '{{ gitea_container_cleanup_timer_name }}'
+    systemd_timer_enabled:      '{{ gitea_cleanup_enabled }}'
+    systemd_timer_frequency:    '{{ gitea_container_cleanup_timer_frequency }}'
+    systemd_timer_timeout_sec:  '{{ gitea_container_cleanup_timer_timeout }}'
+    systemd_timer_work_dir:     '{{ gitea_service_path }}'
     systemd_timer_dynamic_user: true
-    systemd_timer_frequency: '{{ gitea_container_cleanup_timer_frequency }}'
-    systemd_timer_timeout_sec: '{{ gitea_container_cleanup_timer_timeout }}'
-    systemd_timer_work_dir: '{{ gitea_service_path }}'
-    systemd_timer_requires_extra: 'docker.service'
     systemd_timer_start_on_creation: false
+    systemd_timer_requires_extra: 'docker.service'
     systemd_timer_script_path: '{{ gitea_service_path}}/cleanup-registry.py'
     systemd_timer_script_args: >-
       --url http://localhost:{{ gitea_app_cont_web_port }}
       --retention {{ gitea_cleanup_max_retention }}
     systemd_timer_environment:
       GITEA_USERNAME: '{{ gitea_app_admin_user | mandatory }}'
-      GITEA_PASSWORD: '{{ gitea_app_admin_pass | mandatory }}'
+      GITEA_PASSWORD: '{{ gitea_container_cleanup_api_token | mandatory }}'
