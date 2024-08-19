@@ -47,7 +47,7 @@ gitea_db_pass: 'changeMeIfYouCare'
 # Backups
 gitea_db_backup_service_name: 'dump-{{ gitea_service_name }}-db'
 gitea_db_backup_frequency: 'daily'
-gitea_db_backup_timeout: 300
+gitea_db_backup_timeout: 600
 gitea_db_backup_user: 'root'
 
 # Ini
