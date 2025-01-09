@@ -24,5 +24,5 @@
       --url http://localhost:{{ gitea_app_cont_web_port }}
       --retention {{ gitea_cleanup_max_retention }}
     systemd_timer_environment:
-      GITEA_USERNAME: '{{ gitea_app_admin_user | mandatory }}'
-      GITEA_PASSWORD: '{{ gitea_container_cleanup_api_token | mandatory }}'
+      GITEA_USERNAME: '{{ gitea_app_admin_user  | mandatory }}'
+      GITEA_PASSWORD: '{{ gitea_app_admin_token | mandatory }}'

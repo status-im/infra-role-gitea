@@ -28,7 +28,7 @@ class Artifact:
         self.owner          = owner
         self.creation_date  = datetime.datetime.strptime(creation_date, DATE_FORMAT)
         self.version        = version
- 
+
     def should_be_purge(self, retention_time):
         if (self.creation_date + datetime.timedelta(days=retention_time)) < datetime.datetime.now() :
             return True
@@ -40,7 +40,7 @@ class GiteaApi:
     def __init__(self, url, username, password):
         self.url = url
         self.auth = requests.auth.HTTPBasicAuth(username, password)
-    
+
     def _req(self, method, path):
         try:
             rval = requests.request(method, self.url+path, auth=self.auth)
