@@ -25,7 +25,7 @@ gitea_app_log_level: 'info'
 # App
 gitea_app_cont_name: '{{ gitea_service_name }}-app'
 gitea_app_cont_vol: '{{ gitea_service_path }}/app'
-gitea_app_cont_digest: 'sha256:a31bc526427204ed4aa770c8c8499ac4e1b2041c8c20ceead64c0c869accd53b' # 1.21.4
+gitea_app_cont_digest: 'sha256:ee55efa92a1dd7fcabad02d581972589f3cebda89c11ca57eadb67a1eb7c4254' # 1.23.0
 gitea_app_cont_image: 'gitea/gitea@{{ gitea_app_cont_digest }}'
 gitea_app_cont_ssh_port: 2222
 gitea_app_cont_web_port: 3000
@@ -53,7 +53,7 @@ gitea_db_backup_user: 'root'
 # Ini
 gitea_organizations: []
 #gitea_organizations:
-#  - org1 
+#  - org1
 #  - org2
 
 # Cleanup
