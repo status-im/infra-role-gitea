@@ -10,7 +10,6 @@
 - name: Create containers
   community.docker.docker_compose_v2:
     project_src: '{{ gitea_service_path }}'
-    recreate:    '{{ compose_recreate }}'
     pull:        '{{ compose_pull }}'
     recreate:     '{{ gitea_config.changed | ternary("always", compose_recreate) }}'
   register: gitea_container
