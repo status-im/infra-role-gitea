@@ -13,7 +13,9 @@
         method: 'POST'
         status_code: 201
         body_format: 'json'
-        body: { name: 'ansible' }
+        body:
+          name: 'ansible'
+          scopes: '{{ gitea_app_admin_user_token_scopes}}'
         return_content: true
         user: '{{ gitea_app_admin_user | mandatory }}'
         password: '{{ gitea_app_admin_pass | mandatory }}'

@@ -17,10 +17,33 @@ gitea_app_log_level: 'info'
 #gitea_app_security_token:
 #gitea_app_jwt_secret:
 
+# OAuth
+gitea_app_oauth_enabled: true
+gitea_app_oauth_name: 'Keycloak'
+gitea_app_oauth_provider: 'openidConnect'
+#gitea_app_oauth_client_id: ~
+#gitea_app_oauth_client_secret: ~
+gitea_app_oauth_auto_discover_url: 'https://auth.logos.co/realms/logos-co/.well-known/openid-configuration'
+gitea_app_oauth_additional_scopes: 'groups'
+gitea_app_oauth_group_claim_name: 'groups'
+gitea_app_oauth_admin_group: 'infrastructure'
+
 # Admin user
 #gitea_app_admin_user: ~
 #gitea_app_admin_pass: ~
 #gitea_app_admin_email: ~
+gitea_app_admin_user_token_scopes: [
+  "read:admin",
+  "write:admin",
+  "read:organization",
+  "write:organization",
+  "read:package",
+  "write:package",
+  "read:repository",
+  "write:repository",
+  "read:user",
+  "write:user",
+]
 
 # App
 gitea_app_cont_name: '{{ gitea_service_name }}-app'

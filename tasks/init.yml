@@ -12,5 +12,20 @@
     {{ gitea_service_path }}/init-orgs.py --orgs='{{ gitea_organizations | join(',') }}'
   environment:
     GITEA_TOKEN: '{{ gitea_app_admin_token }}'
-    GITEA_URL:   'http://localhost:{{ gitea_app_cont_web_port }}'
+    GITEA_URL:   'http://localhost:{{ gitea_app_cont_web_port }}/api/v1/'
   when: gitea_organizations is defined and gitea_organizations|length > 0
+
+# API doesn't provide option to create oauth source
+- name: Create the oauth source(Keycloak)
+  command: |
+    docker exec --user {{ gitea_app_cont_uid }}:{{ gitea_app_cont_uid }} {{ gitea_app_cont_name }} \
+    gitea admin auth add-oauth --name '{{ gitea_app_oauth_name }}' \
+    --provider '{{ gitea_app_oauth_provider }}' \
+    --key {{ gitea_app_oauth_client_id }} \
+    --secret {{ gitea_app_oauth_client_secret }} \
+    --auto-discover-url {{ gitea_app_oauth_auto_discover_url }} \
+    --skip-local-2fa \
+    --scopes '{{ gitea_app_oauth_additional_scopes }}' \
+    --group-claim-name '{{ gitea_app_oauth_group_claim_name }}' \
+    --admin-group '{{ gitea_app_oauth_admin_group }}'
+  when: gitea_app_oauth_enabled
