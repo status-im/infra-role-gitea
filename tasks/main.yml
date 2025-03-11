@@ -5,7 +5,17 @@
   tags: ['role::gitea', 'role::gitea:compose']
 - import_tasks: admin.yml
   tags: ['role::gitea', 'role::gitea:admin']
-- import_tasks: token.yml
+- name: Create admin token
+  include_tasks: token.yml
+  vars:
+    gitea_app_admin_token_file: "api-token"
+    gitea_app_admin_token_name: "ansible"
+  tags: ['role::gitea', 'role::gitea:token']
+- name: Create package replication token(used by Harbor)
+  include_tasks: token.yml
+  vars:
+    gitea_app_admin_token_file: "replication-token"
+    gitea_app_admin_token_name: "replication"
   tags: ['role::gitea', 'role::gitea:token']
 - import_tasks: backup.yml
   tags: ['role::gitea', 'role::gitea:backup']

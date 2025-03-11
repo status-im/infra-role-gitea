@@ -1,7 +1,7 @@
 ---
 - name: Check if API token file exists
   stat:
-    path: '{{ gitea_service_path }}/api-token'
+    path: '{{ gitea_service_path }}/{{ gitea_app_admin_token_file }}'
   register: gitea_token_file
 
 - name: Create API token
@@ -14,8 +14,8 @@
         status_code: 201
         body_format: 'json'
         body:
-          name: 'ansible'
-          scopes: '{{ gitea_app_admin_user_token_scopes}}'
+          name: '{{ gitea_app_admin_token_name }}'
+          scopes: '{{ gitea_app_admin_token_scopes[gitea_app_admin_token_name]}}'
         return_content: true
         user: '{{ gitea_app_admin_user | mandatory }}'
         password: '{{ gitea_app_admin_pass | mandatory }}'
@@ -30,11 +30,11 @@
 
 - name: Read API token from file
   slurp:
-    path: '{{ gitea_service_path }}/api-token'
+    path: '{{ gitea_service_path }}/{{ gitea_app_admin_token_file }}'
   register: gitea_app_admin_token_raw
-  when: gitea_token_file.stat.exists
+  when: gitea_token_file.stat.exists and gitea_app_admin_token_name == 'ansible'
 
 - name: Decode token from file cointents
   set_fact:
     gitea_app_admin_token: '{{ gitea_app_admin_token_raw.content | b64decode | trim }}'
-  when: gitea_token_file.stat.exists
+  when: gitea_token_file.stat.exists and gitea_app_admin_token_name == 'ansible'

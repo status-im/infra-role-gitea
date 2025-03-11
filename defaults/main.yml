@@ -32,18 +32,23 @@ gitea_app_oauth_admin_group: 'infrastructure'
 #gitea_app_admin_user: ~
 #gitea_app_admin_pass: ~
 #gitea_app_admin_email: ~
-gitea_app_admin_user_token_scopes: [
-  "read:admin",
-  "write:admin",
-  "read:organization",
-  "write:organization",
-  "read:package",
-  "write:package",
-  "read:repository",
-  "write:repository",
-  "read:user",
-  "write:user",
-]
+gitea_app_admin_token_scopes: 
+  ansible: [
+    'read:admin',
+    'write:admin',
+    'read:organization',
+    'write:organization',
+    'read:package',
+    'write:package',
+    'read:repository',
+    'write:repository',
+    'read:user',
+    'write:user',
+  ]
+  replication:  [
+    'read:package',
+    'write:package'
+  ]
 
 # App
 gitea_app_cont_name: '{{ gitea_service_name }}-app'
@@ -81,7 +86,7 @@ gitea_organizations: []
 
 # Cleanup
 gitea_cleanup_enabled: false
-gitea_cleanup_max_retention: 15
+gitea_cleanup_max_retention: 180
 gitea_container_cleanup_timer_name: 'gitea-cleanup-artifact'
 gitea_container_cleanup_timer_user: '{{ gitea_app_host_uid }}'
 gitea_container_cleanup_timer_frequency: 'daily'

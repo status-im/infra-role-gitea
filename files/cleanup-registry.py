@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from argparse import ArgumentParser, RawTextHelpFormatter
+from urllib.parse import quote
 from os import environ
 import datetime
 import json
@@ -33,7 +34,7 @@ class Artifact:
         if (self.creation_date + datetime.timedelta(days=retention_time)) < datetime.datetime.now() :
             return True
         else:
-            logging.info('The artifact %s is %s old' % (self.name, abs((datetime.datetime.now() - self.creation_date))))
+            logging.info(f'The artifact {self.name}:{self.version} is {abs(datetime.datetime.now() - self.creation_date)} old')
             return False
 
 class GiteaApi:
@@ -65,27 +66,28 @@ def get_organization(giteaApi):
             orgs.append(elt['username'])
         return orgs
     except requests.exceptions.HTTPError as err:
-        logging.error('Error %s when trying to get the organization: %s' % (err.response.status_code, err.response.text))
+        logging.error(f'Error {err.response.status_code} when trying to get the organization: {err.response.text}')
 
 def get_artifacts(giteaApi, org):
-    logging.info('Querrying org %s to list all artifacts' % org)
+    logging.info(f'Querrying org {org} to list all artifacts')
     try:
         arts=[]
-        res=giteaApi._get('packages/%s' %  org)
+        res=giteaApi._get(f'packages/{org}')
         for elt in res.json():
             if elt['type'] == 'container':
-                arts.append(Artifact(elt['name'], elt['owner'], elt['created_at'], elt['version']))
+                arts.append(Artifact(elt['name'], elt['owner']['full_name'], elt['created_at'], elt['version']))
         return arts
     except requests.exceptions.HTTPError as err:
-        logging.error('Error %s when trying to get all the artifact of %s: %s' % (err.response.status_code, org, err.response.text))
+        logging.error(f'Error {err.response.status_code} when trying to get all the artifact of {org}: {err.response.text}')
         raise err
 
 def delete_artifact(giteaApi, art):
-    logging.info('Deleting artifact %s of %s' % (art.name, art.owner))
+    logging.info(f'Deleting artifact {art.name} of {art.owner}')
     try:
-        res=giteaApi._del('packages/%s/container/%s/%s' % (art.owner, art.name, art.version))
+        path = f'packages/{art.owner}/container/{quote(art.name, safe="")}/{art.version}'
+        res=giteaApi._del(path)
     except requests.exceptions.HTTPError as err:
-        logging.error('Error %s when trying to delete artifact %s:%s from %s: %s' % (err.response.status_code, art.name, art.version, art.owner, err.response.text))
+        logging.error(f'Error {err.response.status_code} when trying to delete artifact {art.name}:{art.version} from {art.owner}: {err.response.text}')
         raise err
 
 def parse_args():
@@ -102,12 +104,12 @@ def parse_args():
 def main():
     args = parse_args()
     logging.basicConfig(level=args.log.upper())
-    giteaApi = GiteaApi('%s/api/v1/' % args.url, args.username, args.password)
+    giteaApi = GiteaApi(f'{args.url}/api/v1/', args.username, args.password)
     orgs=get_organization(giteaApi)
-    logging.info("Deployment : %s", orgs)
+    logging.info(f'Deployment : {orgs}')
     failed=[]
     for org in orgs:
-        logging.info('Get containers from %s' % org)
+        logging.info(f'Get containers from {org}')
         try:
             conts = get_artifacts(giteaApi, org)
             for cont in conts:
@@ -120,7 +122,7 @@ def main():
         except requests.exceptions.HTTPError as err:
             failed.append(err.response.text)
     if len(failed) > 0:
-        logging.error('The purge has failed:\n%s' % failed)
+        logging.error(f'The purge has failed:\n{failed}')
         exit(1)
 if __name__ == '__main__':
   main()
