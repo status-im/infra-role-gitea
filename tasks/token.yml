@@ -15,7 +15,7 @@
         body_format: 'json'
         body:
           name: '{{ gitea_app_admin_token_name }}'
-          scopes: '{{ gitea_app_admin_token_scopes[gitea_app_admin_token_name]}}'
+          scopes: '{{ gitea_app_admin_token_scopes[gitea_app_admin_token_name] }}'
         return_content: true
         user: '{{ gitea_app_admin_user | mandatory }}'
         password: '{{ gitea_app_admin_pass | mandatory }}'
@@ -26,7 +26,7 @@
       copy:
         dest: '{{ gitea_service_path }}/api-token'
         content: '{{ gitea_app_admin_token_raw.json.sha1 }}'
-        mode: 0400
+        mode: '0o400'
 
 - name: Read API token from file
   slurp:

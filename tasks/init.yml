@@ -4,8 +4,8 @@
     src: 'init-orgs.py'
     dest: '{{ gitea_service_path }}/init-orgs.py'
     owner: '{{ gitea_app_host_uid }}'
-    group: docker
-    mode: 0770
+    group: 'docker'
+    mode: '0o770'
 
 - name: Launch init script
   command: |

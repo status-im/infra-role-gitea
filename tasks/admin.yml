@@ -1,10 +1,4 @@
 ---
-- name: Wait for Web port to be available
-  wait_for:
-    port: '{{ gitea_app_cont_web_port }}'
-    delay: 15
-  when: gitea_container.changed
-
 - name: Check if admin user already exists
   uri:
     url: '{{ gitea_app_cont_web_url }}/api/v1/users/{{ gitea_app_admin_user }}'

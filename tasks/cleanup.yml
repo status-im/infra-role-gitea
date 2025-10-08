@@ -4,11 +4,12 @@
     src: 'cleanup-registry.py'
     dest: '{{ gitea_service_path }}/cleanup-registry.py'
     owner: '{{ gitea_app_host_uid }}'
-    group: docker
-    mode: 0755
+    group: 'docker'
+    mode: '0o755'
 
 - name: 'Create timer for launch the clean up of workspace '
-  include_role: name=infra-role-systemd-timer
+  include_role:
+    name: infra-role-systemd-timer
   vars:
     systemd_timer_description:  'Timer to perform clean '
     systemd_timer_name:         '{{ gitea_container_cleanup_timer_name }}'
@@ -19,7 +20,7 @@
     systemd_timer_dynamic_user: true
     systemd_timer_start_on_creation: false
     systemd_timer_requires_extra: 'docker.service'
-    systemd_timer_script_path: '{{ gitea_service_path}}/cleanup-registry.py'
+    systemd_timer_script_path: '{{ gitea_service_path }}/cleanup-registry.py'
     systemd_timer_script_args: >-
       --url http://localhost:{{ gitea_app_cont_web_port }}
       --retention {{ gitea_cleanup_max_retention }}

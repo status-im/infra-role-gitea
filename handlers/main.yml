@@ -1,0 +1,5 @@
+---
+- name: Wait for Web port to be available
+  wait_for:
+    port: '{{ gitea_app_cont_web_port }}'
+    delay: 15

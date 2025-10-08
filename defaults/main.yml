@@ -32,7 +32,7 @@ gitea_app_oauth_admin_group: 'infrastructure'
 #gitea_app_admin_user: ~
 #gitea_app_admin_pass: ~
 #gitea_app_admin_email: ~
-gitea_app_admin_token_scopes: 
+gitea_app_admin_token_scopes:
   ansible: [
     'read:admin',
     'write:admin',
