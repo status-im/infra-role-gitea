@@ -58,7 +58,9 @@ Recreating gitea-db ... done
 Recreating gitea-app ... done
 ```
 
-# Backups
+# Backup & Restore
+
+See [BACKUP.md](./BACKUP.md) doc.
 
 A Systemd timer creates `pg_dump` backups of the PostgreSQL database daily:
 ```
