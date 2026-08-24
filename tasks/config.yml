@@ -1,16 +1,16 @@
 ---
 - name: Create directories for app data
   file:
-    path: '{{ gitea_app_cont_vol }}/{{ item }}'
+    path: '{{ gitea_app_cont_vol }}/{{ item.path }}'
     state: 'directory'
     owner: '{{ gitea_app_host_uid }}'
     group: 'dockremap'
-    mode: '0o755'
+    mode:  '{{ item.mode | default("0o755") }}'
   with_items:
-    - 'data/gitea/conf'
-    - 'data/gitea/log'
-    - 'data/git'
-    - 'data/git/.ssh'
+    - { path: 'data/gitea/conf' }
+    - { path: 'data/gitea/log' }
+    - { path: 'data/git' }
+    - { path: 'data/git/.ssh', mode: '0o700' }
 
 - name: Create SSH directory
   file:
@@ -29,11 +29,20 @@
     mode: '0o770'
     recurse: true
 
+- name: Create tokens directory
+  file:
+    path: '{{ gitea_service_path }}/tokens'
+    owner: 'root'
+    group: 'root'
+    state: 'directory'
+    mode:  '0o700'
+    recurse: true
+
 - name: Create Gitea configuration
   template:
-    src: 'gitea.ini.j2'
-    dest: '{{ gitea_app_cont_vol }}/data/gitea/conf/app.ini'
+    src:   'gitea.ini.j2'
+    dest:  '{{ gitea_app_cont_vol }}/data/gitea/conf/app.ini'
     owner: '{{ gitea_app_host_uid }}'
     group: 'dockremap'
-    mode: '0o400'
+    mode:  '0o400'
   register: gitea_config

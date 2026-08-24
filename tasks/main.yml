@@ -1,27 +1,31 @@
 ---
 - import_tasks: config.yml
   tags: ['role::gitea', 'role::gitea:config']
+
 - import_tasks: compose.yml
   tags: ['role::gitea', 'role::gitea:compose']
+
 - import_tasks: admin.yml
   tags: ['role::gitea', 'role::gitea:admin']
+
 - name: Create admin token
-  include_tasks: token.yml
-  vars:
-    gitea_app_admin_token_file: "api-token"
-    gitea_app_admin_token_name: "ansible"
   tags: ['role::gitea', 'role::gitea:token']
+  include_tasks: token.yml
+  vars: { gitea_app_admin_token_name: 'ansible' }
+
 - name: Create package replication token(used by Harbor)
-  include_tasks: token.yml
-  vars:
-    gitea_app_admin_token_file: "replication-token"
-    gitea_app_admin_token_name: "replication"
   tags: ['role::gitea', 'role::gitea:token']
+  include_tasks: token.yml
+  vars: { gitea_app_admin_token_name: 'replication' }
+
 - import_tasks: backup.yml
   tags: ['role::gitea', 'role::gitea:backup']
+
 - import_tasks: consul.yml
   tags: ['role::gitea', 'role::gitea:consul']
+
 - import_tasks: init.yml
   tags: ['role::gitea', 'role::gitea:init']
+
 - import_tasks: cleanup.yml
   tags: ['role::gitea', 'role::gitea:cleanup']

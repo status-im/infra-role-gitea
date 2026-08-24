@@ -1,40 +1,34 @@
 ---
 - name: Check if API token file exists
   stat:
-    path: '{{ gitea_service_path }}/{{ gitea_app_admin_token_file }}'
+    path: '{{ gitea_service_path }}/tokens/{{ gitea_app_admin_token_name }}'
   register: gitea_token_file
 
 - name: Create API token
   when: not gitea_token_file.stat.exists
   block:
     - name: Generate API token for admin
-      uri:
-        url: '{{ gitea_app_cont_web_url }}/api/v1/users/{{ gitea_app_admin_user }}/tokens'
-        method: 'POST'
-        status_code: 201
-        body_format: 'json'
-        body:
-          name: '{{ gitea_app_admin_token_name }}'
-          scopes: '{{ gitea_app_admin_token_scopes[gitea_app_admin_token_name] }}'
-        return_content: true
-        user: '{{ gitea_app_admin_user | mandatory }}'
-        password: '{{ gitea_app_admin_pass | mandatory }}'
-        force_basic_auth: true
-      register: gitea_app_admin_token_raw
+      register: gitea_app_admin_token_cmd
+      command: |
+        docker exec --user {{ gitea_app_cont_uid }} -i {{ gitea_app_cont_name }} \
+          gitea admin user generate-access-token \
+            --username '{{ gitea_app_admin_user | mandatory }}' \
+            --token-name '{{ gitea_app_admin_token_name | mandatory }}' \
+            --scopes '{{ gitea_app_admin_token_scopes[gitea_app_admin_token_name] | mandatory | join(",") }}'
 
     - name: Create an API token file
       copy:
-        dest: '{{ gitea_service_path }}/api-token'
-        content: '{{ gitea_app_admin_token_raw.json.sha1 }}'
-        mode: '0o400'
+        dest:    '{{ gitea_service_path }}/tokens/{{ gitea_app_admin_token_name }}'
+        content: '{{ gitea_app_admin_token_cmd.stdout.split()[-1] }}'
+        mode:    '0o400'
 
 - name: Read API token from file
   slurp:
-    path: '{{ gitea_service_path }}/{{ gitea_app_admin_token_file }}'
+    path: '{{ gitea_service_path }}/tokens/{{ gitea_app_admin_token_name }}'
   register: gitea_app_admin_token_raw
   when: gitea_token_file.stat.exists and gitea_app_admin_token_name == 'ansible'
 
-- name: Decode token from file cointents
+- name: Decode token from file contents
   set_fact:
     gitea_app_admin_token: '{{ gitea_app_admin_token_raw.content | b64decode | trim }}'
   when: gitea_token_file.stat.exists and gitea_app_admin_token_name == 'ansible'

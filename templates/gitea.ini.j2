@@ -18,10 +18,11 @@ APP_DATA_PATH = /data/gitea
 DOMAIN = {{ gitea_app_web_domain | mandatory }}
 SSH_DOMAIN = {{ gitea_app_ssh_domain | mandatory }}
 HTTP_PORT = {{ gitea_app_cont_web_port }}
-ROOT_URL = https://{{ gitea_app_web_domain | mandatory }}
+ROOT_URL = https://{{ gitea_app_web_domain | mandatory }}/
 DISABLE_SSH = false
 SSH_PORT = {{ gitea_app_ssh_port }}
 LFS_START_SERVER = false
+PUBLIC_URL_DETECTION = never
 LANDING_PAGE = explore
 
 [lfs]
@@ -73,8 +74,12 @@ INTERNAL_TOKEN = {{ gitea_app_security_token | mandatory }}
 REVERSE_PROXY_TRUSTED_PROXIES = *
 
 [service]
-DISABLE_REGISTRATION = {{ gitea_app_disable_registration }}
-REQUIRE_SIGNIN_VIEW = false
+ALLOW_ONLY_EXTERNAL_REGISTRATION = true
+DISABLE_REGISTRATION = false
+ENABLE_BASIC_AUTHENTICATION = false
+ENABLE_PASSKEY_AUTHENTICATION = false
+ENABLE_PASSWORD_SIGNIN_FORM = true
+REQUIRE_SIGNIN_VIEW = true
 
 [oauth2]
 JWT_SECRET = {{ gitea_app_jwt_secret | mandatory }}
