@@ -35,5 +35,5 @@
     dest: '{{ gitea_app_cont_vol }}/data/gitea/conf/app.ini'
     owner: '{{ gitea_app_host_uid }}'
     group: 'dockremap'
-    mode: '0o640'
+    mode: '0o400'
   register: gitea_config

@@ -66,7 +66,7 @@ logger.router.MODE = console
 COLORIZE = false
 
 [security]
-INSTALL_LOCK = {{ gitea_app_install_lock }}
+INSTALL_LOCK = {{ gitea_app_install_lock | to_json }}
 SECRET_KEY = {{ gitea_app_secret_key | mandatory }}
 INTERNAL_TOKEN = {{ gitea_app_security_token | mandatory }}
 # Accept X-Forwarded-For headers

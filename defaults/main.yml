@@ -53,7 +53,7 @@ gitea_app_admin_token_scopes:
 # App
 gitea_app_cont_name: '{{ gitea_service_name }}-app'
 gitea_app_cont_vol: '{{ gitea_service_path }}/app'
-gitea_app_cont_digest: 'sha256:ee55efa92a1dd7fcabad02d581972589f3cebda89c11ca57eadb67a1eb7c4254' # 1.23.0
+gitea_app_cont_digest: 'sha256:d20286ca2b2e170fdf628e7231b8a31a3220ade39ff462b55041d43d1fc757dd' # 1.27.2
 gitea_app_cont_image: 'gitea/gitea@{{ gitea_app_cont_digest }}'
 gitea_app_cont_ssh_port: 2222
 gitea_app_cont_web_port: 3000
@@ -63,7 +63,7 @@ gitea_app_host_uid: '{{ 100000 + gitea_app_cont_uid | int }}'
 # DB
 gitea_db_cont_name: '{{ gitea_service_name }}-db'
 gitea_db_cont_vol: '{{ gitea_service_path }}/db'
-gitea_db_cont_tag: '9.6'
+gitea_db_cont_tag: '18.6-alpine'
 gitea_db_cont_image: 'postgres:{{ gitea_db_cont_tag }}'
 gitea_db_cont_port: 5432
 gitea_db_cont_uid: 70
