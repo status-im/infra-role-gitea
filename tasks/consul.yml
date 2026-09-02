@@ -12,4 +12,4 @@
           - id: '{{ gitea_service_name }}-status'
             name: Gitea Healthcheck
             type: http
-            http: 'http://localhost:{{ gitea_app_cont_web_port }}/api/v1/version'
+            http: 'http://localhost:{{ gitea_app_cont_web_port }}/api/healthz'
